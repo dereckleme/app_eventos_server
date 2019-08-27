@@ -129,4 +129,27 @@ class EventosController extends AbstractController
 
         return $this->json(array("response" => $responseResult));
     }
+
+    /**
+     * @Route("/eventos/create", name="eventos_create")
+     */
+    public function create()
+    {
+        $dataRequest = Request::createFromGlobals();
+
+        if ($dataRequest->getMethod() == 'POST') {
+            $entityManager = $this->getDoctrine()->getManager();
+            $newEvent = new Eventos();
+            $newEvent->setLongitude($dataRequest->get('longitude'));
+            $newEvent->setLatitude($dataRequest->get('latitude'));
+            $newEvent->setTitulo($dataRequest->get('titulo'));
+
+            $entityManager->persist($newEvent);
+            $entityManager->flush();
+
+            return $this->json(array("eventCreated" => $newEvent->getId()));
+        }
+
+        return $this->json(array("eventCreated" => false));
+    }
 }
