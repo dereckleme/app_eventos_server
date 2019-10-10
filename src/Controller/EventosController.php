@@ -24,13 +24,20 @@ class EventosController extends AbstractController
         $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
         $listEventos = $repositoryEventos->findBy(array(), array('ideventos' => 'DESC'));
 
+        /**
+         * @var $evento Eventos
+         */
         foreach ($listEventos as $id => $evento) {
+            $then = $evento->getExpira()->getTimestamp();
+            $now = time();
+            $difference = $now - $then;
             $jsonResponse[] = array(
                 "name" => $evento->getTitulo(),
                 "id" => $evento->getId(),
                 "latitude" => $evento->getLatitude(),
                 "longitude" => $evento->getLongitude(),
-                "totalPessoas" => count($evento->getPesssoas())
+                "totalPessoas" => count($evento->getPesssoas()),
+                "secounds" => $difference
             );
         }
 

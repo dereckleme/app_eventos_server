@@ -138,7 +138,7 @@ class Eventos
     /**
      * Get Data
      *
-     * @return string
+     * @return \DateTime
      */
     public function getExpira()
     {
