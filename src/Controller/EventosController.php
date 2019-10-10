@@ -22,7 +22,7 @@ class EventosController extends AbstractController
 
         $jsonResponse = [];
         $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
-        $listEventos = $repositoryEventos->findAll(array(), array('ideventos' => 'DESC'));
+        $listEventos = $repositoryEventos->findAll();
 
         foreach ($listEventos as $id => $evento) {
             $jsonResponse[] = array(
