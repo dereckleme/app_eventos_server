@@ -22,7 +22,7 @@ class EventosController extends AbstractController
 
         $jsonResponse = [];
         $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
-        $listEventos = $repositoryEventos->findAll(array(), array('ideventos' => 'DESC'));
+        $listEventos = $repositoryEventos->findBy(array(), array('ideventos' => 'DESC'));
 
         foreach ($listEventos as $id => $evento) {
             $jsonResponse[] = array(
@@ -143,6 +143,8 @@ class EventosController extends AbstractController
             $newEvent->setLongitude($dataRequest->get('longitude'));
             $newEvent->setLatitude($dataRequest->get('latitude'));
             $newEvent->setTitulo($dataRequest->get('titulo'));
+            $newEvent->setExpira(new \DateTime(date('Y-m-d H:i:s')));
+
 
             $entityManager->persist($newEvent);
             $entityManager->flush();

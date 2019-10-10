@@ -49,6 +49,13 @@ class Eventos
     protected $pesssoas;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="expira", type="datetime")
+     */
+    protected $expira;
+
+    /**
      * VarejoOferta constructor.
      */
     public function __construct()
@@ -126,5 +133,27 @@ class Eventos
     public function setPesssoas($pesssoas): void
     {
         $this->pesssoas = $pesssoas;
+    }
+
+    /**
+     * Get Data
+     *
+     * @return string
+     */
+    public function getExpira()
+    {
+        return $this->expira;
+    }
+
+    /**
+     * Set Data
+     *
+     * @param string $data
+     */
+    public function setExpira($data)
+    {
+        $this->expira = $data;
+
+        return $this;
     }
 }
