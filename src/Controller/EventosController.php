@@ -150,7 +150,10 @@ class EventosController extends AbstractController
     {
         $dataRequest = Request::createFromGlobals();
 
-        if ($dataRequest->getMethod() == 'POST') {
+        if ($dataRequest->getMethod() == 'POST' &&
+            !empty($dataRequest->get('longitude')) &&
+            !empty($dataRequest->get('latitude')) &&
+            !empty($dataRequest->get('titulo'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $newEvent = new Eventos();
             $newEvent->setLongitude($dataRequest->get('longitude'));
