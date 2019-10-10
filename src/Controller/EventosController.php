@@ -143,9 +143,7 @@ class EventosController extends AbstractController
             $newEvent->setLongitude($dataRequest->get('longitude'));
             $newEvent->setLatitude($dataRequest->get('latitude'));
             $newEvent->setTitulo($dataRequest->get('titulo'));
-            $startDate = time();
-           $dataAdd = date('Y-m-d H:i:s', strtotime('+1 day', $startDate));
-            $newEvent->setExpira(new \DateTime(dataAdd));
+            $newEvent->setExpira(new \DateTime('now +1 day'));
 
 
             $entityManager->persist($newEvent);
