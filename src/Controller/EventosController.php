@@ -28,17 +28,23 @@ class EventosController extends AbstractController
          * @var $evento Eventos
          */
         foreach ($listEventos as $id => $evento) {
-            $then = $evento->getExpira()->getTimestamp();
-            $now = time();
-            $difference = $now - $then;
-            $jsonResponse[] = array(
-                "name" => $evento->getTitulo(),
-                "id" => $evento->getId(),
-                "latitude" => $evento->getLatitude(),
-                "longitude" => $evento->getLongitude(),
-                "totalPessoas" => count($evento->getPesssoas()),
-                "secounds" => $difference
-            );
+            $hiDate = $evento->getExpira();
+            $date = new \DateTime();
+            if ($date->getTimestamp() <= $hiDate->getTimestamp()) {
+                $diff = $hiDate->diff($date);
+                $secs = ((($diff->format("%a") * 24) + $diff->format("%H")) * 60 +
+                        $diff->format("%i")) * 60 + $diff->format("%s");
+                $jsonResponse[] = array(
+                    "name" => $evento->getTitulo(),
+                    "id" => $evento->getId(),
+                    "latitude" => $evento->getLatitude(),
+                    "longitude" => $evento->getLongitude(),
+                    "totalPessoas" => count($evento->getPesssoas()),
+                    "secounds" => $secs,
+                    "dataAgora" => $date->format("y/m/d H:m:s"),
+                    "vence" => $hiDate->format("y/m/d H:m:s"),
+                );
+            }
         }
 
         return $this->json($jsonResponse);
@@ -150,7 +156,7 @@ class EventosController extends AbstractController
             $newEvent->setLongitude($dataRequest->get('longitude'));
             $newEvent->setLatitude($dataRequest->get('latitude'));
             $newEvent->setTitulo($dataRequest->get('titulo'));
-            $newEvent->setExpira(new \DateTime('now +1 day'));
+            $newEvent->setExpira(new \DateTime('+1 day'));
 
 
             $entityManager->persist($newEvent);
