@@ -157,8 +157,9 @@ class EventosController extends AbstractController
     public function pessoaDelete($eventoId, $deviceId)
     {
         $responseResult = true;
-        $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
-        $repositoryPessoaEvento = $this->getDoctrine()->getRepository("App:EventosPessoas");
+        $entityManager = $this->getDoctrine()->getManager();
+        $repositoryEventos = $entityManager->getRepository("App:Eventos");
+        $repositoryPessoaEvento = $entityManager->getRepository("App:EventosPessoas");
 
         /**
          * @var $evento Eventos
@@ -173,10 +174,8 @@ class EventosController extends AbstractController
         $dataRequest = Request::createFromGlobals();
 
         if ($dataRequest->getMethod() == 'POST') {
-            $entityManager = $this->getDoctrine()->getManager();
-
             if ($result) {
-                $entityManager->remove($entityManager);
+                $entityManager->remove($result);
                 $entityManager->flush();
             }
         }
