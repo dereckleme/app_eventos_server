@@ -152,6 +152,39 @@ class EventosController extends AbstractController
     }
 
     /**
+     * @Route("/eventos/delete/{eventoId}/{deviceId}", name="eventos_pessoa_delete")
+     */
+    public function pessoaDelete($eventoId, $deviceId)
+    {
+        $responseResult = true;
+        $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
+        $repositoryPessoaEvento = $this->getDoctrine()->getRepository("App:EventosPessoas");
+
+        /**
+         * @var $evento Eventos
+         */
+        $evento = $repositoryEventos->find($eventoId);
+
+        $result = $repositoryPessoaEvento->findOneBy(array(
+            "evento" =>  $evento,
+            "deviceId" => $deviceId
+        ));
+
+        $dataRequest = Request::createFromGlobals();
+
+        if ($dataRequest->getMethod() == 'POST') {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            if ($result) {
+                $entityManager->remove($entityManager);
+                $entityManager->flush();
+            }
+        }
+
+        return $this->json(array("response" => $responseResult));
+    }
+
+    /**
      * @Route("/eventos/create", name="eventos_create")
      */
     public function create()
