@@ -53,7 +53,7 @@ class EventosController extends AbstractController
     /**
      * @Route("/eventos/dados/{eventoId}/{deviceId}", name="eventos_dados")
      */
-    public function dados($eventoId, $deviceId)
+    public function dados($eventoId, $deviceId = null)
     {
         $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
 
