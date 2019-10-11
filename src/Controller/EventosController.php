@@ -51,9 +51,9 @@ class EventosController extends AbstractController
     }
 
     /**
-     * @Route("/eventos/dados/{eventoId}", name="eventos_dados")
+     * @Route("/eventos/dados/{eventoId}/{deviceId}", name="eventos_dados")
      */
-    public function dados($eventoId)
+    public function dados($eventoId, $deviceId)
     {
         $repositoryEventos = $this->getDoctrine()->getRepository("App:Eventos");
 
@@ -62,12 +62,20 @@ class EventosController extends AbstractController
          */
         $evento = $repositoryEventos->find($eventoId);
 
+        $inEvent = $this->getDoctrine()->getRepository("App:EventosPessoas")->findOneBy(array(
+            'deviceId' => $deviceId,
+            'evento' => $evento
+        ));
+
+
+
         return $this->json([
             "id" => $evento->getId(),
             "titulo" => strtoupper($evento->getTitulo()),
             "latitude" => $evento->getLatitude(),
             "longitude" => $evento->getLongitude(),
             "totalPessoas" => count($evento->getPesssoas()),
+            "inEvent" => ($inEvent) ? true : false
         ]);
     }
 
